@@ -1,4 +1,3 @@
-import os from "os";
 import express from "express";
 import connectDB from "./db.config.js";
 import dotenv from "dotenv";
@@ -11,7 +10,9 @@ if(cluster.isPrimary) {
     cluster.fork();
     cluster.fork();
     cluster.fork();
-
+    cluster.fork();
+    cluster.fork();
+    
 } else {
 
     const app = express();
@@ -28,9 +29,15 @@ if(cluster.isPrimary) {
     main();
 
     app.get("/hello", (req, res) => {
+        let sum = 0;
+
+        for (let i = 0; i < 50000000; i++) {
+            sum += i;
+        }
+
         res.json({
             message: "Hello users, let's get started!"
-        })
+        });
     });
-    
+
 }
